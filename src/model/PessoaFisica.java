@@ -4,7 +4,9 @@ public class PessoaFisica extends Pessoa {
     private String cpf;
     private int idade;
 
-    public PessoaFisica() {}
+    public PessoaFisica() {
+        super();
+    }
 
     public PessoaFisica(int id, String nome, String cpf, int idade) {
         super(id, nome);
@@ -30,7 +32,6 @@ public class PessoaFisica extends Pessoa {
 
     @Override
     public void exibir() {
-        super.exibir();
-        System.out.println("CPF: " + cpf + ", Idade: " + idade);
+        System.out.println("ID: " + getId() + ", Nome: " + getNome() + ", CPF: " + cpf + ", Idade: " + idade);
     }
 }

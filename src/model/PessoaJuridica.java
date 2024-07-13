@@ -3,7 +3,9 @@ package model;
 public class PessoaJuridica extends Pessoa {
     private String cnpj;
 
-    public PessoaJuridica() {}
+    public PessoaJuridica() {
+        super();
+    }
 
     public PessoaJuridica(int id, String nome, String cnpj) {
         super(id, nome);
@@ -20,7 +22,6 @@ public class PessoaJuridica extends Pessoa {
 
     @Override
     public void exibir() {
-        super.exibir();
-        System.out.println("CNPJ: " + cnpj);
+        System.out.println("ID: " + getId() + ", Nome: " + getNome() + ", CNPJ: " + cnpj);
     }
 }

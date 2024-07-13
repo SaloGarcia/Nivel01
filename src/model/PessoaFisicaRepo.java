@@ -4,47 +4,54 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PessoaFisicaRepo {
-    private List<PessoaFisica> pessoasFisicas;
+public class PessoaFisicaRepo implements Serializable {
+    private List<PessoaFisica> pessoas;
 
     public PessoaFisicaRepo() {
-        pessoasFisicas = new ArrayList<>();
+        this.pessoas = new ArrayList<>();
     }
 
-    public void inserir(PessoaFisica pessoaFisica) {
-        pessoasFisicas.add(pessoaFisica);
+    public void inserir(PessoaFisica pessoa) {
+        pessoas.add(pessoa);
     }
 
-    public void alterar(PessoaFisica pessoaFisica) {
-        for (int i = 0; i < pessoasFisicas.size(); i++) {
-            if (pessoasFisicas.get(i).getId() == pessoaFisica.getId()) {
-                pessoasFisicas.set(i, pessoaFisica);
+    public void alterar(PessoaFisica pessoaNova) {
+        for (PessoaFisica pf : pessoas) {
+            if (pf.getId() == pessoaNova.getId()) {
+                pf.setNome(pessoaNova.getNome());
+                pf.setCpf(pessoaNova.getCpf());
+                pf.setIdade(pessoaNova.getIdade());
                 return;
             }
         }
     }
 
     public void excluir(int id) {
-        pessoasFisicas.removeIf(p -> p.getId() == id);
+        pessoas.removeIf(p -> p.getId() == id);
     }
 
     public PessoaFisica obter(int id) {
-        return pessoasFisicas.stream().filter(p -> p.getId() == id).findFirst().orElse(null);
+        for (PessoaFisica pf : pessoas) {
+            if (pf.getId() == id) {
+                return pf;
+            }
+        }
+        return null;
     }
 
     public List<PessoaFisica> obterTodos() {
-        return new ArrayList<>(pessoasFisicas);
+        return pessoas;
     }
 
-    public void persistir(String nomeArquivo) throws IOException {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nomeArquivo))) {
-            oos.writeObject(pessoasFisicas);
-        }
+    public void persistir(String arquivo) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(arquivo));
+        oos.writeObject(pessoas);
+        oos.close();
     }
 
-    public void recuperar(String nomeArquivo) throws IOException, ClassNotFoundException {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomeArquivo))) {
-            pessoasFisicas = (List<PessoaFisica>) ois.readObject();
-        }
+    public void recuperar(String arquivo) throws IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(arquivo));
+        pessoas = (List<PessoaFisica>) ois.readObject();
+        ois.close();
     }
 }
